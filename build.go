@@ -253,18 +253,18 @@ func (this *BuildQuery) Delete(table string) *BuildQuery {
 	return this
 }
 
-func (this *BuildQuery) Value(key, value string) *BuildQuery {
+func (this *BuildQuery) Value(key string, value interface{}) *BuildQuery {
 	key = this.filterColum(key)
-	value = this.adapter.QuoteValue(value)
-	this.sqlPreBuild.rows[key] = value
+	newValue := this.adapter.QuoteValue(fmt.Sprintf("%v", value))
+	this.sqlPreBuild.rows[key] = newValue
 	return this
 }
 
-func (this *BuildQuery) Values(dict map[string]string) *BuildQuery {
+func (this *BuildQuery) Values(dict map[string]interface{}) *BuildQuery {
 	for key, value := range dict {
 		key = this.filterColum(key)
-		value = this.adapter.QuoteValue(value)
-		this.sqlPreBuild.rows[key] = value
+		newValue := this.adapter.QuoteValue(fmt.Sprintf("%v", value))
+		this.sqlPreBuild.rows[key] = newValue
 	}
 	return this
 }
